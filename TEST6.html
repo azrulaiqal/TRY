@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNTUK AMMAR!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(90deg, #f9d423, #ff4e50);
+            background-size: 400% 400%;
+            font-family: 'ARIAL', cursive, sans-serif;
+            color: white;
+            text-align: center;
+            overflow: hidden;
+            animation: backgroundMove 4s infinite;
+        }
+
+        @keyframes backgroundMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-top: 50px;
+            text-transform: uppercase;
+            animation: shake 1s infinite;
+        }
+
+        @keyframes shake {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(-5deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .laugh-emoji {
+            font-size: 5rem;
+            margin: 20px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        p {
+            font-size: 1.5rem;
+            margin: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 15px 30px;
+            margin-top: 20px;
+            background: #ff4e50;
+            color: white;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            animation: wiggle 2s infinite;
+        }
+
+        .button:hover {
+            background: #f9d423;
+            color: black;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
+            75% { transform: rotate(-10deg); }
+        }
+
+        .confetti {
+            position: absolute;
+            top: -10%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Content -->
+    <h1>BODO SENANG KENA TIPU! 🤣</h1>
+    <p class="laugh-emoji">😂😂😂</p>
+    <p>MUKA GANGSTER PUN KENA SCAM BODO PUNYA MANUSIA HAHAHAHAHAHAHA 🤣</p>
+    <button class="button" onclick="triggerLaugh()">TRY TEKAN SINI! 😂</button>
+
+    <!-- Confetti -->
+    <canvas id="confetti" class="confetti"></canvas>
+
+    <!-- Audio -->
+    <audio id="laughSound" src="https://www.soundjay.com/human/laugh-male-01.mp3" preload="auto"></audio>
+
+    <script>
+        const laughSound = document.getElementById("laughSound");
+        const confettiCanvas = document.getElementById("confetti");
+        const ctx = confettiCanvas.getContext("2d");
+
+        confettiCanvas.width = window.innerWidth;
+        confettiCanvas.height = window.innerHeight;
+
+        let confetti = [];
+        const confettiCount = 300;
+        const colors = ["#ff4e50", "#f9d423", "#ffffff", "#00c9ff", "#92fe9d"];
+
+        class Confetto {
+            constructor(x, y, color, size, speed) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.size = size;
+                this.speed = speed;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.closePath();
+            }
+
+            update() {
+                this.y += this.speed;
+                if (this.y > confettiCanvas.height) {
+                    this.y = -10;
+                    this.x = Math.random() * confettiCanvas.width;
+                }
+                this.draw();
+            }
+        }
+
+        function initConfetti() {
+            for (let i = 0; i < confettiCount; i++) {
+                const x = Math.random() * confettiCanvas.width;
+                const y = Math.random() * confettiCanvas.height;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const size = Math.random() * 4 + 2;
+                const speed = Math.random() * 2 + 1;
+
+                confetti.push(new Confetto(x, y, color, size, speed));
+            }
+        }
+
+        function animateConfetti() {
+            ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            confetti.forEach(confetto => confetto.update());
+            requestAnimationFrame(animateConfetti);
+        }
+
+        initConfetti();
+        animateConfetti();
+
+        function triggerLaugh() {
+            laughSound.play();
+            alert("HAHAHAHA! BODO KENA SCAM LAGI! 😂🤣");
+        }
+    </script>
+</body>
+</html>
